@@ -47,16 +47,3 @@ export async function getArrayofFilms(array) {
   const resultData = await Promise.all(arrayOfFilms);
   return resultData;
 }
-
-// export default {
-//   async getTrendData(page) {
-//     try {
-//       const { data } = await axios.get(
-//         `${TREND_URL}?api_key=${API_KEY}&page=${page}`
-//       );
-//       return data;
-//     } catch (error) {
-//       console.error('Smth wrong with api get full trends' + error);
-//     }
-//   },
-// };
