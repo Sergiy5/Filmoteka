@@ -27,7 +27,7 @@ export async function getMovieById(id) {
     const { data } = await axios.get(
       `${ID_URL}/${id}?api_key=${API_KEY}&language=en-US`
     );
-
+console.log('data', data);
     return data;
   } catch (error) {
     console.error('Smth wrong with api ID fetch' + error.status);
