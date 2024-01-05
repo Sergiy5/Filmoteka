@@ -1,3 +1,5 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 export function getStorage(e, key) {
   e.preventDefault();
 
@@ -13,7 +15,7 @@ export function getStorage(e, key) {
   });
 }
 
-// Превірка довжини строки
+// Перевірка довжини строки
 
 // const string = document.querySelector('.string');
 // const lengthString = string.textContent;

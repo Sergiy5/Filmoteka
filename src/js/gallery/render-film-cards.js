@@ -1,24 +1,28 @@
-import { Notify } from 'notiflix';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { getTrending } from '../api/api-service';
 import { createGalleryMarkup } from '../gallery/galleryMarkupCards';
 import { createLibraryMarkup } from '../gallery/libraryMarkupCards';
-import { genresGalleryFormatModal } from './formatGenres';
+// import { genresGalleryFormatModal } from './formatGenres';
 import { getMovieById } from '../api/api-service';
 import { movieOnSearch } from '../api/api-service';
-import { addMovieToStorage } from '../storage/set-storage';
 import { getStorage } from '../storage/get-storage';
 import { instance } from '../components/pagination';
+import {
+  closeModal,
+  dataForModal,
+  KEY_WATCHED,
+  openModal,
+  KEY_QUEUE,
+} from '../modal/modal';
 
-const KEY_WATCHED = 'watched';
-const KEY_QUEUE = 'queue';
+
 const modal = document.querySelector('.modal');
 const libraryBtn = document.querySelector('.js-show__library');
 const homeBtn = document.querySelector('.js-show__home');
 const serchForm = document.querySelector('.js-show');
 const linksWatchedQueu = document.querySelector('.header__user-links-wrapper');
-const addToWatchedBtn = document.querySelector('.add-to-watched');
-const addToQueuedBtn = document.querySelector('.add-to-queue');
+
 const watchedHeaderBtn = document.querySelector('.js-watched');
 const queueHeaderBtn = document.querySelector('.js-queue');
 const galleryfilms = document.querySelector('.list-films-js');
@@ -58,67 +62,11 @@ getTrending(1).then(data => {
   );
   Loading.remove();
 });
+// MODAL======================
 
 galleryfilms.addEventListener('click', openModal);
 
-async function openModal(e) {
-  const currentMovieId = e.target.id;
-  modal.style.display = 'block';
-  document.body.classList.add('stop-scrolling');
-  
-  // DATA FOR MODAL======================
-
-  const movieForModal = await getMovieById(currentMovieId);
-
-  if (movieForModal.poster_path !== null){
-    modal.querySelector(
-      '.modal_image'
-    ).src = `https://image.tmdb.org/t/p/w500/${movieForModal.poster_path}`;
-  } 
-  console.log('modal',modal.querySelector('.modal_image').src);
-  
-  const movieTitle = modal.querySelector('.modal_title');
-  movieTitle.textContent = movieForModal.title;
-
-  const movieVote = modal.querySelector('.vote');
-  movieVote.textContent = `${movieForModal.vote_average} / ${movieForModal.vote_count}`;
-
-  const moviePopularity = modal.querySelector('.popularity');
-  moviePopularity.textContent = movieForModal.popularity;
-
-  const movieOriginalTitle = modal.querySelector('.original-title');
-  movieOriginalTitle.textContent = movieForModal.original_title;
-
-  const genres = genresGalleryFormatModal(movieForModal.genres);
-  const movieGenres = modal.querySelector('.genre');
-  movieGenres.textContent = genres;
-
-  const movieOverview = modal.querySelector('.modal_description');
-  movieOverview.textContent = movieForModal.overview;
-
-  // SET STORAGE
-
-  addToWatchedBtn.addEventListener('click', addToWatched);
-  addToQueuedBtn.addEventListener('click', addToQueue);
-
-  function addToWatched() {
-    const movie = movieForModal.id;
-    addMovieToStorage(KEY_WATCHED, movie);
-  }
-
-  function addToQueue() {
-    const movie = movieForModal.id;
-    addMovieToStorage(KEY_QUEUE, movie);
-  }
-}
-
 closeModalBtn.addEventListener('click', closeModal);
-
-function closeModal() {
-  modal.style.display = 'none';
-  document.body.classList.remove('stop-scrolling');
-  modal.querySelector('.modal_image').src = '';
-}
 
 window.addEventListener('keydown', e => {
   if (e.keyCode === 27) {
@@ -131,6 +79,21 @@ window.addEventListener('click', e => {
     closeModal();
   }
 });
+
+// SET STORAGE
+
+// addToWatchedBtn.addEventListener('click', addToWatched);
+// addToQueuedBtn.addEventListener('click', addToQueue);
+
+// function addToWatched() {
+//   const movie = movieForModal.id;
+//   addMovieToStorage(KEY_WATCHED, movie);
+// }
+
+// function addToQueue() {
+//   const movie = movieForModal.id;
+//   addMovieToStorage(KEY_QUEUE, movie);
+// }
 
 libraryBtn.addEventListener('click', onShowLibrary);
 

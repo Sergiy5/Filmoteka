@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { API_KEY, BASE_URL, TREND_URL, SEARCH_URL, ID_URL } from './api';
 
 export async function getTrending(page) {
@@ -6,6 +7,7 @@ export async function getTrending(page) {
     return await axios
     .get(url)
       .then(response => {
+        console.log('response', response);
       return response.data;
     })
 };
@@ -24,12 +26,13 @@ export async function movieOnSearch(text, page = 1) {
 
 export async function getMovieById(id) {
   try {
-    const { data } = await axios.get(
+    const response = await axios.get(
       `${ID_URL}/${id}?api_key=${API_KEY}&language=en-US`
     );
-console.log('data', data);
-    return data;
+    console.log('responseId', response);
+    return response.data;
   } catch (error) {
+    Notify.info('Sorry but we can`t find file for this url');
     console.error('Smth wrong with api ID fetch' + error.status);
   }
 }
