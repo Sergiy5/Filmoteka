@@ -1,18 +1,30 @@
 import axios from 'axios';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { API_KEY, BASE_URL, TREND_URL, SEARCH_URL, ID_URL } from './api';
+import { API_KEY, TREND_URL, SEARCH_URL, ID_URL } from './apiUrl';
 
+//*Get trending moies=================================================
 export async function getTrending(page) {
-    const url = `${BASE_URL}/trending/all/day?api_key=${API_KEY}&language=en-US&page=${page}`;
-    return await axios
-    .get(url)
-      .then(response => {
-        console.log('response', response);
-      return response.data;
-    })
-};
+  try {
+    const response = await axios.get(`${TREND_URL}${page}`);
+    return response.data;
+  } catch (error) {
+    Notify.info(error.message);
+  }
+}
 
+//* Get movie by ID====================================================
+export async function getMovieById(id) {
+  try {
+    const response = await axios.get(
+      `${ID_URL}/${id}?api_key=${API_KEY}&language=en-US`
+    );
+    return response.data;
+  } catch (error) {
+    Notify.info(error.message);
+  }
+}
 
+//* Get search movie=================================================================
 export async function movieOnSearch(text, page = 1) {
   try {
     const { data } = await axios.get(
@@ -20,33 +32,9 @@ export async function movieOnSearch(text, page = 1) {
     );
     return data;
   } catch (error) {
-    console.error('Smth wrong with api search fetch' + error);
+       Notify.info(error.message);
   }
 }
-
-export async function getMovieById(id) {
-  try {
-    const response = await axios.get(
-      `${ID_URL}/${id}?api_key=${API_KEY}&language=en-US`
-    );
-    console.log('responseId', response);
-    return response.data;
-  } catch (error) {
-    Notify.info('Sorry but we can`t find file for this url');
-    console.error('Smth wrong with api ID fetch' + error.status);
-  }
-}
-
-export async function getArrayofFilms(array) {
-  const arrayOfFilms = array.map(async id => {
-    return await axios
-      .get(`${ID_URL}/${id}?api_key=${API_KEY}&language=en-US`)
-      .then(response => {
-        return response.data;
-      })
-      .catch(error => console.log(error));
-  });
-
-  const resultData = await Promise.all(arrayOfFilms);
-  return resultData;
-}
+//* URL for movie by ID from another API =====================================
+ 
+// const URL_IMDB = `https://api.themoviedb.org/3/find/tt15789038?external_source=imdb_id&api_key=${API_KEY}`;

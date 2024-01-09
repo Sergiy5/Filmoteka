@@ -7,13 +7,14 @@ export function getStorage(e, key) {
   const fetchStorage = localStorage.getItem(KEY_STORAGE);
   const parsData = fetchStorage === null ? undefined : JSON.parse(fetchStorage);
 
-  if (parsData) {
-    return parsData;
+   return parsData ??
+      Notify.info(`Your ${KEY_STORAGE} is empty, add something first.`, {
+        width: '320px',
+        showOnlyTheLastOne: true,
+        clickToClose: true,
+      });
+  
   }
-  Notify.info(`Your ${KEY_STORAGE} is empty, add something first.`, {
-    width: '320px',
-  });
-}
 
 // Перевірка довжини строки
 

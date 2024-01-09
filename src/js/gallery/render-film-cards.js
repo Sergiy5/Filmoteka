@@ -3,32 +3,23 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { getTrending } from '../api/api-service';
 import { createGalleryMarkup } from '../gallery/galleryMarkupCards';
 import { createLibraryMarkup } from '../gallery/libraryMarkupCards';
-// import { genresGalleryFormatModal } from './formatGenres';
 import { getMovieById } from '../api/api-service';
 import { movieOnSearch } from '../api/api-service';
 import { getStorage } from '../storage/get-storage';
 import { instance } from '../components/pagination';
 import {
-  closeModal,
-  dataForModal,
-  KEY_WATCHED,
-  openModal,
   KEY_QUEUE,
+  KEY_WATCHED,
 } from '../modal/modal';
 
-
-const modal = document.querySelector('.modal');
 const libraryBtn = document.querySelector('.js-show__library');
 const homeBtn = document.querySelector('.js-show__home');
 const serchForm = document.querySelector('.js-show');
 const linksWatchedQueu = document.querySelector('.header__user-links-wrapper');
-
 const watchedHeaderBtn = document.querySelector('.js-watched');
 const queueHeaderBtn = document.querySelector('.js-queue');
 const galleryfilms = document.querySelector('.list-films-js');
-const closeModalBtn = document.querySelector('.modal__button');
 const searchForm = document.querySelector('.header__search-form');
-const backdrop = document.querySelector('.modal__backdrop');
 
 instance.on('beforeMove', evt => {
   onLoadSpiner();
@@ -62,38 +53,8 @@ getTrending(1).then(data => {
   );
   Loading.remove();
 });
-// MODAL======================
 
-galleryfilms.addEventListener('click', openModal);
-
-closeModalBtn.addEventListener('click', closeModal);
-
-window.addEventListener('keydown', e => {
-  if (e.keyCode === 27) {
-    closeModal();
-  }
-});
-
-window.addEventListener('click', e => {
-  if (e.target === backdrop) {
-    closeModal();
-  }
-});
-
-// SET STORAGE
-
-// addToWatchedBtn.addEventListener('click', addToWatched);
-// addToQueuedBtn.addEventListener('click', addToQueue);
-
-// function addToWatched() {
-//   const movie = movieForModal.id;
-//   addMovieToStorage(KEY_WATCHED, movie);
-// }
-
-// function addToQueue() {
-//   const movie = movieForModal.id;
-//   addMovieToStorage(KEY_QUEUE, movie);
-// }
+// Show library==========================================
 
 libraryBtn.addEventListener('click', onShowLibrary);
 
@@ -114,7 +75,8 @@ function onShowLibrary(e) {
   const idInQeue = getStorage(e, KEY_QUEUE);
   const arrayAllStorage = [...idInWatched, ...idInQeue];
 
-  // Створення масиву з унікальними елементами
+  // Unic array for library==================================
+
   const uniqueIdsInStorage = arrayAllStorage.filter(
     (movie, index, arr) => arr.indexOf(movie) === index
   );
@@ -133,7 +95,7 @@ function onShowLibrary(e) {
   Loading.remove();
 }
 
-// Рендеринг фільмів 'watched', 'queue'
+// Show library=============================================
 
 watchedHeaderBtn.addEventListener('click', showMovieInWatched);
 queueHeaderBtn.addEventListener('click', showMovieInQeue);
@@ -174,7 +136,7 @@ function showMovieInQeue(e) {
   Loading.remove();
 }
 
-// Пошук фільмів з інпуту
+// Search movie============================================
 
 searchForm.addEventListener('submit', searchMovie);
 

@@ -7,7 +7,7 @@ export function addMovieToStorage(key, movie) {
 
   if (!storage) {
     const newStorage = [];
-    newStorage.push(movie);
+    newStorage.unshift(movie);
     return localStorage.setItem(key, JSON.stringify(newStorage));
   }
   const newElem = storage.find(item => item === movie);
@@ -17,5 +17,10 @@ export function addMovieToStorage(key, movie) {
     return localStorage.setItem(key, JSON.stringify(storage));
   }
   
-  // Notify.info(`The movie already exist in ${key.toUpperCase()}`, { width: '280px' });
+  Notify.info(`The movie already exist in ${key.toUpperCase()}`, {
+    width: '280px',
+    showOnlyTheLastOne: true,
+    clickToClose: true,
+  });
+  
 }

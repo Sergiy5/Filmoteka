@@ -12,10 +12,46 @@ const movieOverview = modal.querySelector('.modal_description');
 const modalImage = modal.querySelector('.modal_image');
 const addToWatchedBtn = document.querySelector('.add-to-watched');
 const addToQueuedBtn = document.querySelector('.add-to-queue');
+const backdrop = document.querySelector('.modal__backdrop');
+const galleryfilms = document.querySelector('.list-films-js');
+const closeModalBtn = document.querySelector('.modal__button');
 
 export const KEY_WATCHED = 'watched';
 export const KEY_QUEUE = 'queue';
 
+// Open modal===========================================
+galleryfilms.addEventListener('click', openModal);
+
+export async function openModal(e) {
+  const currentMovieId = e.target.id;
+  const movieForModal = await getMovieById(currentMovieId);
+  dataForModal(movieForModal);
+  modal.style.display = 'block';
+  document.body.classList.add('stop-scrolling');
+}
+
+// Close modal==========================================
+closeModalBtn.addEventListener('click', closeModal);
+
+export function closeModal() {
+  modal.style.display = 'none';
+  document.body.classList.remove('stop-scrolling');
+  modalImage.src = '';
+}
+
+window.addEventListener('keydown', e => {
+  if (e.keyCode === 27) {
+    closeModal();
+  }
+});
+
+window.addEventListener('click', e => {
+  if (e.target === backdrop) {
+    closeModal();
+  }
+});
+
+// Data for modal==========================================
 export const dataForModal = movieForModal => {
   const {
     id,
@@ -36,45 +72,14 @@ export const dataForModal = movieForModal => {
   }
 
   movieTitle.textContent = title;
-
   movieVote.textContent = `${vote_average} / ${vote_count}`;
-
   moviePopularity.textContent = popularity;
-
   movieOriginalTitle.textContent = original_title;
-
   movieGenres.textContent = genresGalleryFormatModal(genres);
-
   movieOverview.textContent = overview;
 
-  // SET STORAGE
+  // Set to storage (Watched and Queue)==================================================
 
-  addToWatchedBtn.addEventListener('click', addToWatched);
-  addToQueuedBtn.addEventListener('click', addToQueue);
-
-  function addToWatched() {
-    const movie = id;
-    addMovieToStorage(KEY_WATCHED, movie);
-  }
-
-  function addToQueue() {
-    const movie = id;
-    addMovieToStorage(KEY_QUEUE, movie);
-  }
+  addToWatchedBtn.addEventListener('click', () => addMovieToStorage(KEY_WATCHED, id));
+  addToQueuedBtn.addEventListener('click', () => addMovieToStorage(KEY_QUEUE, id));
 };
-
-// ============================
-
-export async function openModal(e) {
-  const currentMovieId = e.target.id;
-  const movieForModal = await getMovieById(currentMovieId);
-  dataForModal(movieForModal);
-  modal.style.display = 'block';
-  document.body.classList.add('stop-scrolling');
-}
-
-export function closeModal() {
-  modal.style.display = 'none';
-  document.body.classList.remove('stop-scrolling');
-  modalImage.src = '';
-}
