@@ -1,16 +1,11 @@
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { getTrending } from '../api/api-service';
 import { createGalleryMarkup } from '../gallery/galleryMarkupCards';
-import { createLibraryMarkup } from '../gallery/libraryMarkupCards';
 import { getMovieById } from '../api/api-service';
 import { movieOnSearch } from '../api/api-service';
 import { getStorage } from '../storage/get-storage';
 import { instance } from '../components/pagination';
-import {
-  KEY_QUEUE,
-  KEY_WATCHED,
-} from '../modal/modal';
+import { KEY_QUEUE, KEY_WATCHED } from '../storage/keysForStorage';
 
 const libraryBtn = document.querySelector('.js-show__library');
 const homeBtn = document.querySelector('.js-show__home');

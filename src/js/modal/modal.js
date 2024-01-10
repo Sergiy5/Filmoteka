@@ -1,27 +1,29 @@
 import image from '../../images/no_poster/no_poster.jpg';
 import { getMovieById } from '../api/api-service';
 import { genresGalleryFormatModal } from '../gallery/formatGenres';
+import { KEY_QUEUE, KEY_WATCHED } from '../storage/keysForStorage';
 import { addMovieToStorage } from '../storage/set-storage';
 
-const movieTitle = modal.querySelector('.modal_title');
-const movieVote = modal.querySelector('.vote');
-const moviePopularity = modal.querySelector('.popularity');
-const movieOriginalTitle = modal.querySelector('.original-title');
-const movieGenres = modal.querySelector('.genre');
-const movieOverview = modal.querySelector('.modal_description');
-const modalImage = modal.querySelector('.modal_image');
-const addToWatchedBtn = document.querySelector('.add-to-watched');
-const addToQueuedBtn = document.querySelector('.add-to-queue');
-const backdrop = document.querySelector('.modal__backdrop');
-const galleryfilms = document.querySelector('.list-films-js');
-const closeModalBtn = document.querySelector('.modal__button');
+import { modalRefs } from './modalRefs';
+const {
+  movieTitle,
+  movieVote,
+  moviePopularity,
+  movieOriginalTitle,
+  movieGenres,
+  movieOverview,
+  modalImage,
+  addToWatchedBtn,
+  addToQueuedBtn,
+  backdrop,
+  galleryfilms,
+  closeModalBtn,
+} = modalRefs; 
 
-export const KEY_WATCHED = 'watched';
-export const KEY_QUEUE = 'queue';
+   // Open modal===========================================
 
-// Open modal===========================================
 galleryfilms.addEventListener('click', openModal);
-
+  
 export async function openModal(e) {
   const currentMovieId = e.target.id;
   const movieForModal = await getMovieById(currentMovieId);

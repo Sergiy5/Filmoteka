@@ -1,5 +1,5 @@
 import { genresGalleryFormat } from './formatGenres';
-import no_poster from '../../images/no_poster/no_poster.wp.webp';
+import no_poster from '../../images/no_poster/no_poster.jpg';
 
 export function createGalleryMarkup(films) {
   
