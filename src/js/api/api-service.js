@@ -8,7 +8,11 @@ export async function getTrending(page) {
     const response = await axios.get(`${TREND_URL}${page}`);
     return response.data;
   } catch (error) {
-    Notify.info(error.message);
+    Notify.info('Sorry, but we can`t download this', {
+      width: '320px',
+      showOnlyTheLastOne: true,
+      clickToClose: true,
+    });
   }
 }
 
@@ -20,7 +24,11 @@ export async function getMovieById(id) {
     );
     return response.data;
   } catch (error) {
-    Notify.info(error.message);
+    Notify.info('Sorry, but we can`t find this movie', {
+      width: '320px',
+      showOnlyTheLastOne: true,
+      clickToClose: true,
+    });
   }
 }
 

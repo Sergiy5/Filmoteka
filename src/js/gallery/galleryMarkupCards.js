@@ -1,5 +1,5 @@
 import { genresGalleryFormat } from './formatGenres';
-import no_poster from '../../images/no_poster/no_poster.jpg';
+import no_poster from '../../images/no_poster/No-Image.jpg';
 
 export function createGalleryMarkup(films) {
   

@@ -1,4 +1,4 @@
-import image from '../../images/no_poster/no_poster.jpg';
+import image from '../../images/no_poster/No-Image.jpg';
 import { getMovieById } from '../api/api-service';
 import { genresGalleryFormatModal } from '../gallery/formatGenres';
 import { KEY_QUEUE, KEY_WATCHED } from '../storage/keysForStorage';
