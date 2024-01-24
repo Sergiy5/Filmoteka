@@ -1,19 +1,20 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+// import { KEY_QUEUE, KEY_WATCHED } from './keysForStorage';
 
 export function addMovieToStorage(key, movie) {
 
-  const checkStorage = localStorage.getItem(key);
-  const storage = checkStorage === null ? undefined : JSON.parse(checkStorage);
+  const ifStorage = localStorage.getItem(key);
+  const storage = ifStorage === null ? undefined : JSON.parse(ifStorage);
 
   if (!storage) {
     const newStorage = [];
-    newStorage.unshift(movie);
+    newStorage.push(movie);
     return localStorage.setItem(key, JSON.stringify(newStorage));
   }
   const newElem = storage.find(item => item === movie);
 
   if (!newElem) {
-    storage.push(movie);
+    storage.unshift(movie);
     return localStorage.setItem(key, JSON.stringify(storage));
   }
   

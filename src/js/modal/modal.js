@@ -1,8 +1,8 @@
-import image from '../../images/no_poster/No-Image.jpg';
 import { getMovieById } from '../api/api-service';
 import { genresGalleryFormatModal } from '../gallery/formatGenres';
 import { KEY_QUEUE, KEY_WATCHED } from '../storage/keysForStorage';
 import { addMovieToStorage } from '../storage/set-storage';
+import image from '../../images/no_poster/No-Image.jpg';
 
 import { modalRefs } from './modalRefs';
 const {
