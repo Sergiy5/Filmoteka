@@ -1,7 +1,7 @@
 import { getMovieById } from '../api/api-service';
 import { genresGalleryFormatModal } from '../gallery/formatGenres';
 import { KEY_QUEUE, KEY_WATCHED } from '../storage/keysForStorage';
-import { addMovieToStorage } from '../storage/set-storage';
+import { addMovieToStorage, checkMovie } from '../storage/set-storage';
 import image from '../../images/no_poster/No-Image.jpg';
 
 import { modalRefs } from './modalRefs';
@@ -32,26 +32,6 @@ export async function openModal(e) {
   document.body.classList.add('stop-scrolling');
 }
 
-// Close modal==========================================
-closeModalBtn.addEventListener('click', closeModal);
-
-export function closeModal() {
-  modal.style.display = 'none';
-  document.body.classList.remove('stop-scrolling');
-  modalImage.src = '';
-}
-
-window.addEventListener('keydown', e => {
-  if (e.keyCode === 27) {
-    closeModal();
-  }
-});
-
-window.addEventListener('click', e => {
-  if (e.target === backdrop) {
-    closeModal();
-  }
-});
 
 // Data for modal==========================================
 export const dataForModal = movieForModal => {
@@ -81,7 +61,29 @@ export const dataForModal = movieForModal => {
   movieOverview.textContent = overview;
 
   // Set to storage (Watched and Queue)==================================================
-
-  addToWatchedBtn.addEventListener('click', () => addMovieToStorage(KEY_WATCHED, id));
-  addToQueuedBtn.addEventListener('click', () => addMovieToStorage(KEY_QUEUE, id));
+  addToWatchedBtn.addEventListener('click', () =>  addMovieToStorage(KEY_WATCHED, KEY_QUEUE, id));
+  addToQueuedBtn.addEventListener('click', () => addMovieToStorage(KEY_QUEUE, KEY_WATCHED, id));
 };
+
+// Close modal==========================================
+closeModalBtn.addEventListener('click', closeModal);
+
+export function closeModal() {
+  modal.style.display = 'none';
+  document.body.classList.remove('stop-scrolling');
+  modalImage.src = '';
+  const btoon = document.querySelector('.modal_buttons');
+  btoon.innerHTML = '';
+}
+
+window.addEventListener('keydown', e => {
+  if (e.keyCode === 27) {
+    closeModal();
+  }
+});
+
+window.addEventListener('click', e => {
+  if (e.target === backdrop) {
+    closeModal();
+  }
+});
