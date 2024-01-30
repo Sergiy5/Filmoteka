@@ -16,6 +16,7 @@ const queueHeaderBtn = document.querySelector('.js-queue');
 const galleryfilms = document.querySelector('.list-films-js');
 const searchForm = document.querySelector('.header__search-form');
 
+// On first load ============================
 instance.on('beforeMove', evt => {
   onLoadSpiner();
   galleryfilms.innerHTML = '';
@@ -34,6 +35,8 @@ instance.on('beforeMove', evt => {
     });
   }
 });
+
+// On houme page ==============================
 
 getTrending(1).then(data => {
   homeBtn.classList.add('current');
@@ -65,10 +68,13 @@ function onShowLibrary(e) {
   linksWatchedQueu.style.display = 'flex';
 
   galleryfilms.innerHTML = '';
+  
 
-  const idInWatched = getStorage(e, KEY_WATCHED);
-  const idInQeue = getStorage(e, KEY_QUEUE);
-  const arrayAllStorage = [...idInWatched, ...idInQeue];
+  const watchedStorage = getStorage(e, KEY_WATCHED);
+  const qeueStorage = getStorage(e, KEY_QUEUE);
+  
+    
+  const arrayAllStorage = [...watchedStorage, ...qeueStorage];
 
   // Unic array for library==================================
 

@@ -17,7 +17,7 @@ export function addMovieToStorage(key, keyForFilter, movie) {
     const newElem = storage.find(item => item === movie);
   if (!newElem) {
     storage.unshift(movie);
-    filteredStorage(keyForFilter, movie); 
+    // filteredStorage(keyForFilter, movie); 
     return localStorage.setItem(key, JSON.stringify(storage));
     
   }

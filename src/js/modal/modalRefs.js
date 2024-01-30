@@ -7,8 +7,9 @@ export const modalRefs = {
   movieOverview: modal.querySelector('.modal_description'),
   modalImage: modal.querySelector('.modal_image'),
   addToWatchedBtn: document.querySelector('.add-to-watched'),
-  addToQueuedBtn: document.querySelector('.add-to-queue'),
+  addToQueueBtn: document.querySelector('.add-to-queue'),
   backdrop: document.querySelector('.modal__backdrop'),
   galleryfilms: document.querySelector('.list-films-js'),
   closeModalBtn: document.querySelector('.modal__button'),
+  modal__window: document.querySelector('.modal__window'),
 };
