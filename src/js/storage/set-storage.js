@@ -1,46 +1,28 @@
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-// import { KEY_QUEUE, KEY_WATCHED } from './keysForStorage';
 
+export function addMovieToStorage(key, keyStorageFilter, movieId) {
 
-export function addMovieToStorage(key, keyForFilter, movie) {
-  const ifStorage = localStorage.getItem(key)
-  const storage = ifStorage === null ? undefined : JSON.parse(ifStorage);
+  filteredStorage(keyStorageFilter, movieId);
 
-  console.log('movie', movie);
-  
-  if (!storage) {
+  const storage = localStorage.getItem(key);
+
+  if (storage === null) {
     const newStorage = [];
-    newStorage.push(movie);
+    newStorage.push(movieId);
     return localStorage.setItem(key, JSON.stringify(newStorage));
-  } 
-
-    const newElem = storage.find(item => item === movie);
-  if (!newElem) {
-    storage.unshift(movie);
-    // filteredStorage(keyForFilter, movie); 
-    return localStorage.setItem(key, JSON.stringify(storage));
-    
   }
-    return notifyForStorage(key);
-    
+
+  const parsedStorsge = JSON.parse(storage);
+  const onFilterStorage = parsedStorsge.filter((id) => id !== movieId);
+  onFilterStorage.unshift(movieId);
+  localStorage.setItem(key, JSON.stringify(onFilterStorage));
 }
 
-// Filtering storage ====================
+// Filter storage ===================================
 const filteredStorage = (keyFilter, id) => {
   const storage = localStorage.getItem(keyFilter);
-  const storageParsed = storage === null ? undefined : JSON.parse(storage);
-  console.log(storageParsed);
-  if (storage) {
-  const filterStorage = storageParsed.filter(item => item === id);
-  localStorage.setItem(keyFilter, JSON.stringify(filterStorage));  
-  }
-};
+  if (storage === null) return;
 
-// Notify info============================
-const notifyForStorage =(key) => {
-Notify.info(`The movie already exist in ${key.toUpperCase()}`, {
-  width: '280px',
-  showOnlyTheLastOne: true,
-  clickToClose: true,
-});
-}
+  const storageParsed = JSON.parse(storage);
+  const filterStorage = storageParsed.filter((itemId) => itemId !== id);
+  localStorage.setItem(keyFilter, JSON.stringify(filterStorage));
+};

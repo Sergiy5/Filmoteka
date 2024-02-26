@@ -1,7 +1,7 @@
 import { getMovieById } from '../api/api-service';
 import { genresGalleryFormatModal } from '../gallery/formatGenres';
 import { KEY_QUEUE, KEY_WATCHED } from '../storage/keysForStorage';
-import { addMovieToStorage, checkMovie } from '../storage/set-storage';
+import { addMovieToStorage } from '../storage';
 import image from '../../images/no_poster/No-Image.jpg';
 import { modalRefs } from './modalRefs';
 
@@ -29,9 +29,10 @@ export async function openModal(e) {
   const currentMovieId = e.target.id;
   const movieForModal = await getMovieById(currentMovieId);
 
+if(movieForModal){
   dataForModal(movieForModal);
   modal.style.display = 'block';
-  document.body.classList.add('stop-scrolling');
+  document.body.classList.add('stop-scrolling')};
 }
 
 // Data for modal==========================================
@@ -47,9 +48,7 @@ export const dataForModal = movieForModal => {
     genres,
     overview,
   } = movieForModal;
-  // ====================
-  console.log(id);
-  // ====================
+
   if (poster_path !== null) {
     modalImage.src = `https://image.tmdb.org/t/p/w500/${poster_path}`;
   } else {
@@ -63,40 +62,41 @@ export const dataForModal = movieForModal => {
   movieGenres.textContent = genresGalleryFormatModal(genres);
   movieOverview.textContent = overview;
 
-  const addWAtch = () => {};
-
   // Set to storage (Watched and Queue)==================================================
-  addToWatchedBtn.addEventListener(
-    'click',
-    () => {
-      addMovieToStorage(KEY_WATCHED, KEY_QUEUE, id);
-    },
-    { once: true }
-  );
+  const saveToQueue = ()=> {
+    addMovieToStorage(KEY_QUEUE, KEY_WATCHED, id);
+  }
+  const saveToWatched = () => {
+    addMovieToStorage(KEY_WATCHED, KEY_QUEUE, id);
+  };
+  
+  addToWatchedBtn.addEventListener("click", saveToWatched);
+  
+  addToQueueBtn.addEventListener("click", saveToQueue);
 
-  addToQueueBtn.addEventListener('click', () =>
-    addMovieToStorage(KEY_QUEUE, KEY_WATCHED, id)
-  );
-};
 
-// Close modal==========================================
-closeModalBtn.addEventListener('click', closeModal);
+  // Close modal==========================================
+  closeModalBtn.addEventListener('click', closeModal);
+  
+  function closeModal() {
+    addToWatchedBtn.removeEventListener("click", saveToWatched);
+    addToQueueBtn.removeEventListener("click", saveToQueue);
+    modal.style.display = 'none';
+    document.body.classList.remove('stop-scrolling');
+    modalImage.src = '';
+  }
+  
+  window.addEventListener('keydown', e => {
+    if (e.keyCode === 27) {
+      closeModal();
+    }
+  });
+  
+  window.addEventListener('click', e => {
+    if (e.target === backdrop) {
+      closeModal();
+    }
+  });
 
-export function closeModal() {
-  addToWatchedBtn.removeEventListener('click', addMovieToStorage);
-  modal.style.display = 'none';
-  document.body.classList.remove('stop-scrolling');
-  modalImage.src = '';
 }
 
-window.addEventListener('keydown', e => {
-  if (e.keyCode === 27) {
-    closeModal();
-  }
-});
-
-window.addEventListener('click', e => {
-  if (e.target === backdrop) {
-    closeModal();
-  }
-});

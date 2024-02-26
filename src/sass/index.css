@@ -205,16 +205,6 @@ li {
   color: #000;
 }
 
-.header__input:-ms-input-placeholder {
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 1.17;
-  padding-left: 14px;
-  color: #000;
-}
-
 .header__input::placeholder {
   font-family: "Roboto";
   font-style: normal;
@@ -226,11 +216,6 @@ li {
 }
 @media screen and (min-width: 768px) {
   .header__input::-moz-placeholder {
-    font-size: 14px;
-    line-height: 1.14;
-    padding-left: 16px;
-  }
-  .header__input:-ms-input-placeholder {
     font-size: 14px;
     line-height: 1.14;
     padding-left: 16px;
@@ -751,28 +736,7 @@ li {
 }
 
 .footer-svg {
-  -webkit-animation: heartbeat 1s infinite;
-          animation: heartbeat 1s infinite;
-}
-@-webkit-keyframes heartbeat {
-  0% {
-    transform: scale(0.8);
-  }
-  20% {
-    transform: scale(0.9);
-  }
-  40% {
-    transform: scale(0.8);
-  }
-  60% {
-    transform: scale(0.9);
-  }
-  80% {
-    transform: scale(0.8);
-  }
-  100% {
-    transform: scale(1);
-  }
+  animation: heartbeat 1s infinite;
 }
 @keyframes heartbeat {
   0% {
@@ -795,8 +759,7 @@ li {
   }
 }
 .footer-svg:hover, .footer-svg:focus {
-  -webkit-animation-play-state: paused;
-          animation-play-state: paused;
+  animation-play-state: paused;
 }
 
 .button_study {
