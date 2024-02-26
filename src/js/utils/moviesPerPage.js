@@ -1,4 +1,4 @@
-export const moviesPerPage = (moviesArray, quantityOnPage, page = 1) => {
+export const moviesPerPage = (moviesArray, quantityOnPage, page) => {
   const quantity = page * quantityOnPage;
   if (page === 1) {
     const sliceArr = moviesArray.slice(0, quantity);

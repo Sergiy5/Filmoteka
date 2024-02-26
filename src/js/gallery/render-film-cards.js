@@ -17,45 +17,43 @@ const queueHeaderBtn = document.querySelector(".js-queue");
 const galleryfilms = document.querySelector(".list-films-js");
 const searchForm = document.querySelector(".header__search-form");
 
-// On home page ==============================
+// Home page ==============================
 
-getTrending(1).then((data) => {
+getTrending(1).then(({ results }) => {
+  onLoadSpiner();
   homeBtn.classList.add("current");
   homeBtn.setAttribute("data", "current");
   linksWatchedQueu.style.display = "none";
 
-  onLoadSpiner();
-
-  galleryfilms.insertAdjacentHTML(
-    "beforeend",
-    createGalleryMarkup(data.results)
-  );
+  const arrData = moviesPerPage(results, 6, (page = 1));
+  galleryfilms.insertAdjacentHTML("beforeend", createGalleryMarkup(arrData));
   Loading.remove();
 });
 
-// On pagination =========================
-pagination.on("beforeMove", (evt) => {
-
+// Pagination home =========================
+pagination.on("beforeMove", (e) => {
   onLoadSpiner();
   galleryfilms.innerHTML = "";
-  const page = evt.page ?? 1;
+  const page = e.page ?? 1;
+  let getPage = 1
+  if (e.page % 4 === 0) return getPage+=4
+    
+    
+        getTrending(page).then(({ results }) => {
+          const arrData = moviesPerPage(results, 6, page);
 
-  if (homeBtn.getAttribute("data", "current")) {
+          galleryfilms.insertAdjacentHTML(
+            "beforeend",
+            createGalleryMarkup(arrData)
+          );
+          Loading.remove();
+        });
+    
+  
 
-    getTrending(page).then((data) => {
-      
-      homeBtn.classList.add("current");
-      homeBtn.setAttribute("data", "current");
-      linksWatchedQueu.style.display = "none";
-      galleryfilms.insertAdjacentHTML(
-        "beforeend",
-        createGalleryMarkup(data.results)
-      );
-      Loading.remove();
-    });
-  }
+  // if (homeBtn.getAttribute("data", "current")) {
+  // }
 });
-
 
 // Show library==========================================
 
@@ -65,6 +63,8 @@ function onShowLibrary(e) {
   e.preventDefault();
   onLoadSpiner();
 
+  pagination.reset();
+
   libraryBtn.classList.add("current");
   libraryBtn.setAttribute("data", "current");
   homeBtn.classList.remove("current");
@@ -73,17 +73,12 @@ function onShowLibrary(e) {
   linksWatchedQueu.style.display = "flex";
 
   galleryfilms.innerHTML = "";
-
-  const watchedStorage = getStorage(e, KEY_WATCHED);
-  const qeueStorage = getStorage(e, KEY_QUEUE);
+  const watchedStorage = getStorage(KEY_WATCHED);
+  const qeueStorage = getStorage(KEY_QUEUE);
 
   const arrayAllStorage = [...watchedStorage, ...qeueStorage];
-
-  const uniqueIdsInStorage = arrayAllStorage.filter(
-    (movie, index, arr) => arr.indexOf(movie) === index
-  );
-
-  uniqueIdsInStorage.map((id) => {
+  const arrForPage = moviesPerPage(arrayAllStorage, 6, (page = 1));
+  arrForPage.map((id) => {
     getMovieById(id).then((data) => {
       const arrData = [];
       arrData.push(data);
@@ -97,6 +92,31 @@ function onShowLibrary(e) {
   Loading.remove();
 }
 
+pagination.on("beforeMove", (e) => {
+  const page = e.page ?? 1;
+
+  if (libraryBtn.getAttribute("data", "current")) {
+    const watchedStorage = getStorage(KEY_WATCHED);
+    const qeueStorage = getStorage(KEY_QUEUE);
+
+    const arrayAllStorage = [...watchedStorage, ...qeueStorage];
+    const arrForPage = moviesPerPage(arrayAllStorage, 6, page);
+
+    arrForPage.map((id) => {
+      getMovieById(id).then((data) => {
+        const arrData = [];
+        arrData.push(data);
+
+        galleryfilms.insertAdjacentHTML(
+          "beforeend",
+          createGalleryMarkup(arrData)
+        );
+      });
+    });
+  }
+  Loading.remove();
+});
+
 // Show movies in watched or queue =========================
 
 watchedHeaderBtn.addEventListener("click", showMovieInWatched);
@@ -104,13 +124,18 @@ queueHeaderBtn.addEventListener("click", showMovieInQeue);
 
 function showMovieInWatched(e) {
   e.preventDefault();
+
   onLoadSpiner();
+
   galleryfilms.innerHTML = "";
-  const idInWatched = getStorage(e, KEY_WATCHED);
-  idInWatched.map((id) => {
+
+  const arrStorage = getStorage(KEY_WATCHED);
+
+  arrStorage.map((id) => {
     getMovieById(id).then((data) => {
       const arrData = [];
       arrData.push(data);
+
       galleryfilms.insertAdjacentHTML(
         "beforeend",
         createGalleryMarkup(arrData)
