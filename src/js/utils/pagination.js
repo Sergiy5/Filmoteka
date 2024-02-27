@@ -4,8 +4,8 @@ import "tui-pagination/dist/tui-pagination.css";
 const container = document.getElementById("pagination");
 
 const options = {
-  totalItems: 100,
-  visiblePages: 5,
+  totalItems: 500,
+  visiblePages: 10,
   page: 1,
   centerAlign: false,
   firstItemClassName: "tui-first-child",

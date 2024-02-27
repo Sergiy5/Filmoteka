@@ -43,6 +43,3 @@ export async function movieOnSearch(text, page = 1) {
        Notify.info(error.message);
   }
 }
-//* URL for movie by ID from another API =====================================
- 
-// const URL_IMDB = `https://api.themoviedb.org/3/find/tt15789038?external_source=imdb_id&api_key=${API_KEY}`;
