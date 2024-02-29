@@ -4,8 +4,8 @@
   "description": "Этот проект был создан при помощи Parcel.(https://parceljs.org/).",
   "homepage": "https://Sergiy5.github.io/Filmoteka",
   "scripts": {
-    "start": "parcel src/*.html --open",
-    "build": "parcel build src/*.html --public-url /Filmoteka/"
+    "start": "rm -rf .parcel-cache && parcel src/*.html --open",
+    "build": "rm -rf .parcel-cache && parcel build src/*.html --public-url /Filmoteka/"
   },
   "repository": {
     "type": "git",
