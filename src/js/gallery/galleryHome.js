@@ -6,7 +6,10 @@ import {
   onLoadSpiner,
   pagination,
 } from "../utils";
+import { toggleClassCurrent } from "./toggleClassCurrent";
+import refs from '../refs';
 
+const { watchedBtn, queueBtn } = refs;
 const linksWatchedQueu = document.querySelector(".header__user-links-wrapper");
 const homeBtn = document.querySelector(".js-show__home");
 
@@ -14,15 +17,18 @@ const homeBtn = document.querySelector(".js-show__home");
 
 
   getTrending(1).then(({ results }) => {
-  onLoadSpiner();
-  homeBtn.classList.add("current");
-  homeBtn.setAttribute("data", "current");
-  linksWatchedQueu.style.display = "none";
+    onLoadSpiner();
+    homeBtn.classList.add("current");
+    homeBtn.setAttribute("data", "current");
+    linksWatchedQueu.style.display = "none";
 
-  createGallery(results);
+    createGallery(results);
+// Remove Event Listener ==================
+    watchedBtn.removeEventListener("click", toggleClassCurrent);
+    queueBtn.removeEventListener("click", toggleClassCurrent);
 
-  loaderRemove();
-})
+    loaderRemove();
+  })
 
 // Pagination home =========================
 

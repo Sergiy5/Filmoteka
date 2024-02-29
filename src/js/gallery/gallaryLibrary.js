@@ -2,21 +2,26 @@ import { getStorage } from "../storage";
 import {
   clearGallery,
   getMoviesForLibrary,
+  showMovieInWatched,
+  showMovieInQeue,
   loaderRemove,
   moviesPerPage,
   onLoadSpiner,
   pagination,
 } from "../utils";
 import { KEY_QUEUE, KEY_WATCHED } from "../storage/keysForStorage";
+import { toggleClassCurrent } from './toggleClassCurrent';
+import refs from '../refs';
 
-const libraryBtn = document.querySelector(".js-show__library");
-const homeBtn = document.querySelector(".js-show__home");
+const { watchedBtn, queueBtn, libraryBtn, homeBtn } = refs;
 const serchForm = document.querySelector(".js-show");
 const linksWatchedQueu = document.querySelector(".header__user-links-wrapper");
-const watchedHeaderBtn = document.querySelector(".js-watched");
-const queueHeaderBtn = document.querySelector(".js-queue");
 
-// Show library==========================================
+
+
+
+
+// Show library ==========================================
 
 libraryBtn.addEventListener("click", onShowLibrary);
 
@@ -26,14 +31,20 @@ export function onShowLibrary(e) {
 
   pagination.reset();
 
-  libraryBtn.classList.add("current");
-  libraryBtn.setAttribute("data", "current");
   homeBtn.classList.remove("current");
+  queueBtn.classList.remove("current__library");
+  watchedBtn.classList.remove("current__library");
+  libraryBtn.setAttribute("data", "current");
   homeBtn.setAttribute("data", "");
+  libraryBtn.classList.add("current");
   serchForm.style.display = "none";
   linksWatchedQueu.style.display = "flex";
 
   clearGallery();
+
+  // Add Event Listener on buttons watched, queue ===========================
+  watchedBtn.addEventListener("click", toggleClassCurrent);
+  queueBtn.addEventListener("click", toggleClassCurrent);
 
   const watchedStorage = getStorage(KEY_WATCHED);
   const qeueStorage = getStorage(KEY_QUEUE);
@@ -46,13 +57,15 @@ export function onShowLibrary(e) {
   loaderRemove();
 }
 
-pagination.on("beforeMove", (e) => {
-  const page = e.page;
-  const isLibraryCurrent= libraryBtn.getAttribute("data", "current")
-  const isWatchedCurrent = watchedHeaderBtn.classList.contains("current__library")
-  const isQueueCurrent = queueHeaderBtn.classList.contains("current__library")
+// Pagination library
 
-  if (isLibraryCurrent) {
+pagination.on("beforeMove", (e) => {
+   const page = e.page
+  const isWatchedCurrent =
+    watchedBtn.classList.contains("current__library");
+  const isQueueCurrent = queueBtn.classList.contains("current__library");
+  
+  if (!isWatchedCurrent && !isQueueCurrent) {
     const watchedStorage = getStorage(KEY_WATCHED);
     const qeueStorage = getStorage(KEY_QUEUE);
 
@@ -61,63 +74,12 @@ pagination.on("beforeMove", (e) => {
     getMoviesForLibrary(arrForPage);
   }
   if (isWatchedCurrent) {
-    showMovieInWatched(e, page);
+    showMovieInWatched(page);
   }
   if (isQueueCurrent) {
-    showMovieInQeue(e, page);
+    showMovieInQeue(page);
   }
   loaderRemove();
 });
 
-// Show movies in watched or queue =========================
 
-const addAndRemoveClassCurrent = (e) => {
-  const key = e.target.getAttribute("data-current");
-
-  switch (key) {
-    case "watched":
-      queueHeaderBtn.classList.remove("current__library");
-      watchedHeaderBtn.classList.add("current__library");
-
-      break;
-    case "queue":
-      watchedHeaderBtn.classList.remove("current__library");
-      queueHeaderBtn.classList.add("current__library");
-
-      break;
-
-    default:
-      console.log(e);
-      break;
-  }
-};
-
-watchedHeaderBtn.addEventListener("click", addAndRemoveClassCurrent);
-queueHeaderBtn.addEventListener("click", addAndRemoveClassCurrent);
-// showMovieInWatched;showMovieInQeue
-
-export function showMovieInWatched(e, page = 1) {
-  e.preventDefault();
-  onLoadSpiner();
-  clearGallery();
-  pagination.reset();
-
-  const idFromQueue = getStorage(KEY_WATCHED);
-  const arrForPage = moviesPerPage(idFromQueue, 6, page);
-
-  getMoviesForLibrary(arrForPage);
-  loaderRemove();
-}
-
-export function showMovieInQeue(e, page = 1) {
-  e.preventDefault();
-  onLoadSpiner();
-  clearGallery();
-  pagination.reset();
-
-  const idFromWatched = getStorage(KEY_QUEUE);
-  const arrForPage = moviesPerPage(idFromWatched, 6, page);
-
-  getMoviesForLibrary(arrForPage);
-  loaderRemove();
-}
