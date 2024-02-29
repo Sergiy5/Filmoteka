@@ -31,9 +31,10 @@ export function onShowLibrary(e) {
 
   const watchedStorage = getStorage(KEY_WATCHED);
   const qeueStorage = getStorage(KEY_QUEUE);
+  const psge = 1;
 
   const arrayAllStorage = [...watchedStorage, ...qeueStorage];
-  const arrIdForPage = moviesPerPage(arrayAllStorage, 6, (page = 1));
+  const arrIdForPage = moviesPerPage(arrayAllStorage, 6, page );
 
   getMoviesForLibrary(arrIdForPage);
   loaderRemove();
