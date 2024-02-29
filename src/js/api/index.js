@@ -1,1 +1,0 @@
-export { getTrending, getMovieById, movieOnSearch } from "./api-service";
