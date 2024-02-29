@@ -31,7 +31,7 @@ export function onShowLibrary(e) {
 
   const watchedStorage = getStorage(KEY_WATCHED);
   const qeueStorage = getStorage(KEY_QUEUE);
-  const psge = 1;
+  const page = 1;
 
   const arrayAllStorage = [...watchedStorage, ...qeueStorage];
   const arrIdForPage = moviesPerPage(arrayAllStorage, 6, page );
@@ -58,11 +58,12 @@ export default pagination.on("beforeMove", (e) => {
 watchedHeaderBtn.addEventListener("click", showMovieInWatched);
 queueHeaderBtn.addEventListener("click", showMovieInQeue);
 
-export function showMovieInWatched(e) {
+export function showMovieInWatched(e, page=1) {
   e.preventDefault();
   onLoadSpiner();
   clearGallery();
   pagination.reset();
+  const page = 1;
 
   const idFromQueue = getStorage(KEY_WATCHED);
   const arrForPage = moviesPerPage(idFromQueue, 6, page);
@@ -71,15 +72,16 @@ export function showMovieInWatched(e) {
   loaderRemove();
 }
 
-export function showMovieInQeue(e) {
+export function showMovieInQeue(e, page=1) {
   e.preventDefault();
   onLoadSpiner();
   clearGallery();
   pagination.reset();
+  // const page = 1;
 
   const idFromWatched = getStorage(KEY_QUEUE);
   const arrForPage = moviesPerPage(idFromWatched, 6, page);
 
   getMoviesForLibrary(arrForPage);
-    loaderRemove();
+  loaderRemove();
 }
