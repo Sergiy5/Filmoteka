@@ -63,7 +63,6 @@ export function showMovieInWatched(e, page=1) {
   onLoadSpiner();
   clearGallery();
   pagination.reset();
-  const page = 1;
 
   const idFromQueue = getStorage(KEY_WATCHED);
   const arrForPage = moviesPerPage(idFromQueue, 6, page);
