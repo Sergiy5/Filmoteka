@@ -1,7 +1,13 @@
 import { getStorage } from "../storage";
-import { clearGallery, getMoviesForLibrary, loaderRemove, moviesPerPage, onLoadSpiner, pagination } from "../utils";
+import {
+  clearGallery,
+  getMoviesForLibrary,
+  loaderRemove,
+  moviesPerPage,
+  onLoadSpiner,
+  pagination,
+} from "../utils";
 import { KEY_QUEUE, KEY_WATCHED } from "../storage/keysForStorage";
-
 
 const libraryBtn = document.querySelector(".js-show__library");
 const homeBtn = document.querySelector(".js-show__home");
@@ -34,15 +40,19 @@ export function onShowLibrary(e) {
   const page = 1;
 
   const arrayAllStorage = [...watchedStorage, ...qeueStorage];
-  const arrIdForPage = moviesPerPage(arrayAllStorage, 6, page );
+  const arrIdForPage = moviesPerPage(arrayAllStorage, 6, page);
 
   getMoviesForLibrary(arrIdForPage);
   loaderRemove();
 }
 
-export default pagination.on("beforeMove", (e) => {
+pagination.on("beforeMove", (e) => {
   const page = e.page;
-  if (libraryBtn.getAttribute("data", "current")) {
+  const isLibraryCurrent= libraryBtn.getAttribute("data", "current")
+  const isWatchedCurrent = watchedHeaderBtn.classList.contains("current__library")
+  const isQueueCurrent = queueHeaderBtn.classList.contains("current__library")
+
+  if (isLibraryCurrent) {
     const watchedStorage = getStorage(KEY_WATCHED);
     const qeueStorage = getStorage(KEY_QUEUE);
 
@@ -50,15 +60,43 @@ export default pagination.on("beforeMove", (e) => {
     const arrForPage = moviesPerPage(arrayAllStorage, 6, page);
     getMoviesForLibrary(arrForPage);
   }
+  if (isWatchedCurrent) {
+    showMovieInWatched(e, page);
+  }
+  if (isQueueCurrent) {
+    showMovieInQeue(e, page);
+  }
   loaderRemove();
 });
 
 // Show movies in watched or queue =========================
 
-watchedHeaderBtn.addEventListener("click", showMovieInWatched);
-queueHeaderBtn.addEventListener("click", showMovieInQeue);
+const addAndRemoveClassCurrent = (e) => {
+  const key = e.target.getAttribute("data-current");
 
-export function showMovieInWatched(e, page=1) {
+  switch (key) {
+    case "watched":
+      queueHeaderBtn.classList.remove("current__library");
+      watchedHeaderBtn.classList.add("current__library");
+
+      break;
+    case "queue":
+      watchedHeaderBtn.classList.remove("current__library");
+      queueHeaderBtn.classList.add("current__library");
+
+      break;
+
+    default:
+      console.log(e);
+      break;
+  }
+};
+
+watchedHeaderBtn.addEventListener("click", addAndRemoveClassCurrent);
+queueHeaderBtn.addEventListener("click", addAndRemoveClassCurrent);
+// showMovieInWatched;showMovieInQeue
+
+export function showMovieInWatched(e, page = 1) {
   e.preventDefault();
   onLoadSpiner();
   clearGallery();
@@ -71,12 +109,11 @@ export function showMovieInWatched(e, page=1) {
   loaderRemove();
 }
 
-export function showMovieInQeue(e, page=1) {
+export function showMovieInQeue(e, page = 1) {
   e.preventDefault();
   onLoadSpiner();
   clearGallery();
   pagination.reset();
-  // const page = 1;
 
   const idFromWatched = getStorage(KEY_QUEUE);
   const arrForPage = moviesPerPage(idFromWatched, 6, page);

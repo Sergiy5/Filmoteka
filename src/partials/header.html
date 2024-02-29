@@ -12,7 +12,7 @@
             name="query"
             placeholder="Movie search"
           />
-          <button class="header__btn" type="submit" aria-label="search">
+          <button class="header__input-icon-btn" type="submit" aria-label="search">
             <svg class="header__search-logo" width="16" height="16">
               <use href="./images/icons/symbol-defs.svg#icon-search"></use>
             </svg>
@@ -20,13 +20,13 @@
         </div>
       </form>
       <div class="header__links-wrapper">
-        <a class="header__link-home js-show__home" href="index.html">HOME</a>
-        <a class="header__link-library js-show__library" href="">MY LIBRARY</a>
+        <a data-current="home" class="header__link-home js-show__home" href="index.html">HOME</a>
+        <a data-current="queue" class="header__link-library js-show__library" href="">MY LIBRARY</a>
       </div>
       
           <div class="header__user-links-wrapper">
-            <button type="button" class="header__link-watched js-watched button—orange">WATCHED</button>
-            <button type="button" class="header__link-queue js-queue button—orange">QUEUE</button>
+            <button data-current="watched" type="button" class="header__link-watched js-watched button—orange">WATCHED</button>
+            <button data-current="queue" type="button" class="header__link-queue js-queue button—orange">QUEUE</button>
           </div>
     </div>
   </div>

@@ -108,7 +108,7 @@
   }
 }
 
-.header__btn {
+.header__input-icon-btn {
   display: block;
   position: absolute;
   top: 9px;
@@ -230,9 +230,6 @@
 .current {
   background-color: #000;
   color: #fff;
-  // background-color: #fff;
-  // color: #000;
-  // outline: #000 solid 3px;
 }
 
 .header__user-links-wrapper {
@@ -243,8 +240,6 @@
     position: absolute;
     bottom: 24px;
     margin-left: 65px;
-    // left: 50%;
-    // transform: translate(-50%, 0%);
   }
 }
 
@@ -281,11 +276,6 @@
   }
 }
 
-.header__link-watched:hover,
-.header__link-watched:focus {
-  background-color: #b92f2c;
-  color: #fff;
-}
 
 .header__link-queue {
   font-family: 'Roboto';
@@ -306,7 +296,7 @@
   border: 0;
   text-decoration: none;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-
+  
   @media screen and (min-width: 768px) {
     width: 86px;
     height: 38px;
@@ -314,7 +304,7 @@
     margin-top: 16px;
     margin-right: 16px;
   }
-
+  
   @media screen and (min-width: 1280px) {
     width: 117px;
     height: 42px;
@@ -324,11 +314,18 @@
   }
 }
 
+.header__link-watched:hover,
+.header__link-watched:focus,
 .header__link-queue:hover,
 .header__link-queue:focus {
   background-color: #b92f2c;
   color: #fff;
 }
+
+.current__library {
+    background-color: #b92f2c;
+    color: #fff;
+  }
 
 .logo-wrapper-home {
   display: flex;
