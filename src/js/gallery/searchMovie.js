@@ -12,7 +12,6 @@ export async function searchMovie(e) {
   onLoadSpiner();
   clearGallery();
   const query = e.currentTarget.elements.query.value;
-
   const { results } = await movieOnSearch(query);
 
   createGallery(results);

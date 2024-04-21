@@ -1,13 +1,15 @@
 /*Не редактировать (пока я не закончу работу)*/
 
 .modal {
-  display: none;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  
+  z-index: -1;
+  opacity: 0;
+
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 
   &__backdrop {
     display: flex;
@@ -20,11 +22,7 @@
   }
 
   &__window {
-    // height: 568px;
     width: 280px;
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
     margin-top: 50px;
     padding: 48px 20px 40px 20px;
 
@@ -48,22 +46,29 @@
   }
 }
 
-// .modal__window {
-//   display: flex;
-//   justify-content: space-between;
-//   @media screen and (min-width: 1200px) {
+.modal-open {
+  z-index: 0;
+  opacity: 1;
+}
+
+.modal__window {
+  display: flex;
+  justify-content: space-between;
+
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  @media screen and (min-width: 1200px) {
      
-//       width: 806px;
+      width: 806px;
       
-//     }
-// }
+    }
+}
 /*Для редактирования*/
 
-.modal--show {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+// .modal--show {
+//   // display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
 
 // .modal {
 //   @media screen and (min-width: 320px) {

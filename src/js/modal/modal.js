@@ -30,7 +30,11 @@ export async function openModal(e) {
 
 if(movieForModal){
   dataForModal(movieForModal);
-  modal.style.display = 'block';
+
+  console.log('open modal');
+    modal__window.classList.add("modal-open");
+
+  modal.classList.add("modal-open"); 
   document.body.classList.add('stop-scrolling')};
 }
 
@@ -80,7 +84,8 @@ export const dataForModal = movieForModal => {
   function closeModal() {
     addToWatchedBtn.removeEventListener("click", saveToWatched);
     addToQueueBtn.removeEventListener("click", saveToQueue);
-    modal.style.display = 'none';
+    modal.classList.remove("modal-open"); 
+    modal__window.classList.remove("modal-open");
     document.body.classList.remove('stop-scrolling');
     modalImage.src = '';
   }
