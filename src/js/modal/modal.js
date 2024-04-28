@@ -25,13 +25,13 @@ const {
 galleryfilms.addEventListener('click', openModal);
 
 export async function openModal(e) {
+  
   const currentMovieId = e.target.id;
   const movieForModal = await getMovieById(currentMovieId);
 
 if(movieForModal){
   dataForModal(movieForModal);
 
-  console.log('open modal');
     modal__window.classList.add("modal-open");
 
   modal.classList.add("modal-open"); 
